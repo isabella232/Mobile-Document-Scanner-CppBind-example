@@ -1,0 +1,4 @@
+rootProject.name = "android"
+include(":app")
+include(":docscanner")
+project(":docscanner").projectDir = new File("../../document_scanner/api/android/docscanner/")

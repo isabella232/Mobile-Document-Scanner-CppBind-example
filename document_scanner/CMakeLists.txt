@@ -1,0 +1,2 @@
+add_subdirectory(document_scanner_lib)
+add_subdirectory(api)

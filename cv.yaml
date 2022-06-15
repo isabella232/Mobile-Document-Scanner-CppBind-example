@@ -1,0 +1,41 @@
+- type: "cv::Mat"
+  vars:
+    action: gen_class
+    package: cv
+    include_cxx:
+      - <opencv2/opencv.hpp>
+  ::
+  - type: "Mat()"
+    vars:
+      action: gen_constructor
+      throws: no_throw
+
+
+- type: "cv::imread(const cv::String &, int)"
+  vars:
+    action: gen_function
+    package: cv
+    throws: no_throw
+    include_cxx:
+      - <opencv2/opencv.hpp>
+
+
+- type: "cv::Point_<_Tp>"
+  vars:
+    action: gen_class
+    name: Point
+    package: cv
+    include_cxx:
+      - <opencv2/opencv.hpp>
+    template:
+      _Tp:
+        - type: int
+        - type: float
+
+
+- type: cv::ImreadModes
+  vars:
+    action: gen_enum
+    package: cv
+    include_cxx:
+      - <opencv2/opencv.hpp>

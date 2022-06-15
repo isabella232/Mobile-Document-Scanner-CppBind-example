@@ -1,0 +1,79 @@
+vars:
+  out_prj_dir: "."
+  src_glob:
+    - ./document_scanner/document_scanner_lib/document_scanner_cv.cpp
+  src_exclude_glob: []
+  extra_headers:
+    - stdexcept
+    - new
+    - typeinfo
+    - opencv2/opencv.hpp
+  package_prefix: ""
+  include_dirs:
+    - .
+    - /usr/local/include/opencv4
+  kotlin.clang_args:
+    - -D__ANDROID__
+  mac.kotlin.target_arch: x86_64
+  mac.kotlin.clang_args:
+    - -D__ANDROID__
+    - --target={{target_arch}}-none-linux-android
+    - --sysroot={{get_android_ndk_sysroot(getenv('ANDROID_NDK'))}}
+  mac.python.clang_args:
+    - --sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
+  mac.swift.clang_args:
+    - --sysroot=/Library/Developer/CommandLineTools/SDKs/MacOSX.sdk
+  kotlin.cxx_out_dir: "{{path.join(out_prj_dir, 'document_scanner/api/android/docscanner/src/main/cpp/jni')}}"
+  kotlin.out_dir: "{{path.join(out_prj_dir, 'document_scanner/api/android/docscanner/src/main/java')}}"
+  kotlin.c_wrapper_lib_name: null
+  python.cxx_out_dir: "{{path.join(out_prj_dir, 'document_scanner/api/python/generated/wrappers')}}"
+  python.out_dir: "{{path.join(out_prj_dir, 'document_scanner/api/python/generated/python')}}"
+  python.pybind_module: document_scanner_pybind
+  swift.cxx_out_dir: "{{path.join(out_prj_dir, 'document_scanner/api/ios/DocumentScannerFramework/DocumentScannerFramework/Cpp')}}"
+  swift.out_dir: "{{path.join(out_prj_dir, 'document_scanner/api/ios/DocumentScannerFramework/DocumentScannerFramework/swift')}}"
+  swift.c_wrapper_lib_name: DocumentScannerFramework.Private
+  swift.cxx_out_rel_path: 'DocumentScannerFramework'
+  swift.is_c_wrapper_external: True
+
+type_vars:
+  !join
+  - !include std_exc_api.yaml
+  - !include cv.yaml
+
+var_def:
+  !join
+  - !include variable_definitions.yaml  
+  - comment:
+      inheritable: false
+      default: ""
+
+rules:
+  kotlin.code_snippets:
+    !join
+    - !include kotlin/code_snippets.yaml
+  python.code_snippets:
+    !join
+    - !include python/code_snippets.yaml
+  swift.code_snippets:
+    !join
+    - !include swift/code_snippets.yaml
+
+  kotlin.type_converters:
+    !join
+    - !include "kotlin/*_types.yaml"
+  python.type_converters:
+    !join
+    - !include "python/*_types.yaml"
+  swift.type_converters:
+    !join
+    - !include "swift/*_types.yaml"
+
+  kotlin.actions:
+    !join
+    - !include kotlin/actions.yaml
+  python.actions:
+    !join
+    - !include python/actions.yaml
+  swift.actions:
+    !join
+    - !include swift/actions.yaml

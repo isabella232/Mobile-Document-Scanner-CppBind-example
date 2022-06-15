@@ -1,0 +1,38 @@
+rules:
+  swift.code_snippets:
+    file:
+      modulemap:
+        file_path: |
+          document_scanner/api/ios/DocumentScannerFramework/docScanner.modulemap
+        scopes:
+          - header
+        content: |
+          {{[banner_logo, vars.banner_comment]|make_doxygen_comment}}
+
+          framework module DocumentScannerFramework {
+            export *
+
+            explicit module Private {
+              {{header|string|indent(4)}}
+              {%- for cxx_helper_include in cxx_helper_includes %}
+              private header "{{path.basename(cxx_helper_include)}}"
+              {%- endfor %}
+            }
+          }
+          {{new_line}}
+    var_header_include: &var_header_include
+      header:
+        unique_content: |
+          private header "{{path.basename(vars.h_file_fullname)}}"
+
+    interface:
+      modulemap: *var_header_include
+
+    class:
+      modulemap: *var_header_include
+
+    enum:
+      modulemap: *var_header_include
+
+    function:
+      modulemap: *var_header_include

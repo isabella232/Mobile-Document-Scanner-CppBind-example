@@ -1,0 +1,29 @@
+# IDE
+.idea
+
+# macOS
+*.DS_Store
+.AppleDouble
+.LSOverride
+.Trashes
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# cmake
+CMakeLists.txt.user
+CMakeCache.txt
+CMakeFiles
+CMakeScripts
+Makefile
+cmake_install.cmake
+install_manifest.txt
+
+# build
+build_dir/
+
+# xcode
+xcuserdata
+
