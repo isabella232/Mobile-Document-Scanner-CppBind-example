@@ -18,6 +18,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import java.io.File
+import cppbind.exception_helpers.StdRangeError
 
 private lateinit var photoFile: File
 private const val FILE_NAME = "photo.jpg"
@@ -74,16 +75,20 @@ class MainActivity : AppCompatActivity() {
                 val image = imread(photoFile.absolutePath)
                 val docCornersExtractor = DocCornerPointsExtractor()
                 docCornersExtractor.image = image
-                docCornersExtractor.computeCornerPoints()
-                val docExtractor =
-                    DocExtractor(docCornersExtractor.image, docCornersExtractor.points)
-                val imgWarp = docExtractor.warp()
-                saveImage(photoFile.absolutePath, imgWarp)
+                try {
+                    docCornersExtractor.computeCornerPoints()
+                    val docExtractor =
+                        DocExtractor(docCornersExtractor.image, docCornersExtractor.points)
+                    val imgWarp = docExtractor.warp()
+                    saveImage(photoFile.absolutePath, imgWarp)
+                } catch (e: StdRangeError) {
+                    // Invalid corner points detected, skipping
+                    // processing and showing the original image
+                }
 
                 val scan = BitmapFactory.decodeFile(photoFile.absolutePath)
                 val imageView = findViewById<ImageView>(R.id.imageView)
                 imageView.setImageBitmap(scan)
-
 
             }
         }

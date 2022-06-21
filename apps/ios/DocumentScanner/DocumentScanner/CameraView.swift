@@ -27,14 +27,23 @@ class ImagePickerCoordinator : NSObject, UIImagePickerControllerDelegate, UINavi
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        if let image = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
+        if let _originalImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             let imageUtilsObject: ImageUtils = ImageUtils()
-            if imageUtilsObject.saveImage(image: image, jpgFileName: imageUtilsObject.unhandledPhotoJpgName) {
+            if imageUtilsObject.saveImage(image: _originalImage, jpgFileName: imageUtilsObject.unhandledPhotoJpgName) {
                 let directory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
                 let image = imread(filename: directory.appendingPathComponent(imageUtilsObject.unhandledPhotoJpgName).path)
                 let docCornersExtractor = DocCornerPointsExtractor()
                 docCornersExtractor.image = image
-                docCornersExtractor.computeCornerPoints()
+                do {
+                    try docCornersExtractor.computeCornerPoints()
+                } catch is StdRangeError {
+                    // Invalid corner points detected, skipping
+                    // processing and showing the original image
+                    documentImage = Image(uiImage: _originalImage)
+                    cornerPointsImage = nil
+                    isShown = false
+                    return
+                } catch{}
                 let docExtractor = DocExtractor(image: docCornersExtractor.image, docCornerPoints: docCornersExtractor.points)
                 let drawCornerPoints = docExtractor.drawPoints(R: 255, G: 0, B: 0)
                 let imgWarp = docExtractor.warp()

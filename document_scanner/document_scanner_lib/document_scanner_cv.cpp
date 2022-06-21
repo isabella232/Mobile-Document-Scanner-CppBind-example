@@ -48,7 +48,7 @@ class DocCornerPointsExtractor {
     /**
     * __API__
     * action: gen_method
-    * throws: no_throw
+    * throws: std::range_error
     */
     void computeCornerPoints() {
 
@@ -90,12 +90,16 @@ class DocCornerPointsExtractor {
             }
         }
 
+        if(initialPoints.size() != corner_points){
+            throw std::range_error("Invalid corner points detected!");
+        }
+
         // reorder
 
         std::vector<cv::Point> finalPoints;
         std::vector<int>  sumPoints, subPoints;
 
-        for (int i = 0; i < 4; i++)
+        for (int i = 0; i < corner_points; i++)
         {
             sumPoints.push_back(initialPoints[i].x + initialPoints[i].y);
             subPoints.push_back(initialPoints[i].x - initialPoints[i].y);
@@ -122,6 +126,7 @@ class DocCornerPointsExtractor {
     private:
         cv::Mat _image;
         std::vector<cv::Point> _docCornerPoints;
+        int corner_points = 4;
 
 };
 

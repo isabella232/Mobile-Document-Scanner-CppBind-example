@@ -1,5 +1,5 @@
 package doc_scanner
-
+import cppbind.exception_helpers.StdRangeError
 import cv.*
 
 class DocumentScannerApp {
@@ -22,8 +22,13 @@ class DocumentScannerApp {
             val docCornersExtractor = DocCornerPointsExtractor()
             // Set image
             docCornersExtractor.image = image
-            // Compute corner points
-            docCornersExtractor.computeCornerPoints()
+            try{
+                // Compute corner points
+                docCornersExtractor.computeCornerPoints()
+            } catch(e: StdRangeError){
+                println("Invalid corner points detected, please try a different image!")
+                return
+            }
             // Create document extractor object
             val docExtractor = DocExtractor(docCornersExtractor.image, docCornersExtractor.points)
             // Draw contour points on document
