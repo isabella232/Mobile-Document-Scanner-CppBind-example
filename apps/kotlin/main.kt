@@ -1,6 +1,7 @@
 package doc_scanner
+
 import cppbind.exception_helpers.StdRangeError
-import cv.*
+import cv.imread
 
 class DocumentScannerApp {
 
@@ -22,10 +23,10 @@ class DocumentScannerApp {
             val docCornersExtractor = DocCornerPointsExtractor()
             // Set image
             docCornersExtractor.image = image
-            try{
+            try {
                 // Compute corner points
                 docCornersExtractor.computeCornerPoints()
-            } catch(e: StdRangeError){
+            } catch (e: StdRangeError) {
                 println("Invalid corner points detected, please try a different image!")
                 return
             }

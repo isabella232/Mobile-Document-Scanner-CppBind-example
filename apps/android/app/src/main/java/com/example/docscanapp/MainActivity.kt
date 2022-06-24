@@ -4,21 +4,21 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import cv.*
-import doc_scanner.DocCornerPointsExtractor
-import doc_scanner.DocExtractor
-import doc_scanner.saveImage
 import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
-import java.io.File
 import cppbind.exception_helpers.StdRangeError
+import cv.imread
+import doc_scanner.DocCornerPointsExtractor
+import doc_scanner.DocExtractor
+import doc_scanner.saveImage
+import java.io.File
 
 private lateinit var photoFile: File
 private const val FILE_NAME = "photo.jpg"

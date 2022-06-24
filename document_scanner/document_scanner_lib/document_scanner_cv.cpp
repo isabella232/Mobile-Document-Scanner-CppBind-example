@@ -1,6 +1,7 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 
+const int CORNER_POINTS = 4;
 
 /**
  * Document Corner Points Extractor Class.
@@ -90,7 +91,7 @@ class DocCornerPointsExtractor {
             }
         }
 
-        if(initialPoints.size() != corner_points){
+        if(initialPoints.size() != CORNER_POINTS){
             throw std::range_error("Invalid corner points detected!");
         }
 
@@ -99,7 +100,7 @@ class DocCornerPointsExtractor {
         std::vector<cv::Point> finalPoints;
         std::vector<int>  sumPoints, subPoints;
 
-        for (int i = 0; i < corner_points; i++)
+        for (int i = 0; i < CORNER_POINTS; i++)
         {
             sumPoints.push_back(initialPoints[i].x + initialPoints[i].y);
             subPoints.push_back(initialPoints[i].x - initialPoints[i].y);
@@ -126,7 +127,6 @@ class DocCornerPointsExtractor {
     private:
         cv::Mat _image;
         std::vector<cv::Point> _docCornerPoints;
-        int corner_points = 4;
 
 };
 

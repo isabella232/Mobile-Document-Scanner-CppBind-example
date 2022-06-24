@@ -30,7 +30,7 @@ class HelloUser {
         } catch is StdRangeError {
             println("Invalid corner points detected, please try a different image!")
             return
-        } catch{}
+        } catch {}
         // Create document extractor object
         let docExtractor = DocExtractor(image: docCornersExtractor.image, docCornerPoints: docCornersExtractor.points)
         // Draw contour points on document
