@@ -6,6 +6,7 @@
 //
 
 import DocumentScanner
+import cppbind.exception_helpers.StdRangeError
 
 
 @main
@@ -24,8 +25,12 @@ class HelloUser {
         let docCornersExtractor = DocCornerPointsExtractor()
         // Set image
         docCornersExtractor.image = image
-        // Compute corner points
-        docCornersExtractor.computeCornerPoints();
+        do {
+            try docCornersExtractor.computeCornerPoints();
+        } catch is StdRangeError {
+            println("Invalid corner points detected, please try a different image!")
+            return
+        } catch {}
         // Create document extractor object
         let docExtractor = DocExtractor(image: docCornersExtractor.image, docCornerPoints: docCornersExtractor.points)
         // Draw contour points on document

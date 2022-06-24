@@ -5,7 +5,7 @@ endif ()
 
 
 
-file(GLOB JNI_FILES jni/**/*.cpp)
+file(GLOB_RECURSE JNI_FILES jni/*.cpp)
 
 add_library(
     document_scanner

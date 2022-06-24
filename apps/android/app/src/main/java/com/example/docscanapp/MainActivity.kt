@@ -4,19 +4,20 @@ import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.BitmapFactory
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
-import cv.*
-import doc_scanner.DocCornerPointsExtractor
-import doc_scanner.DocExtractor
-import doc_scanner.saveImage
 import android.widget.Button
 import android.widget.ImageView
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import cppbind.exception_helpers.StdRangeError
+import cv.imread
+import doc_scanner.DocCornerPointsExtractor
+import doc_scanner.DocExtractor
+import doc_scanner.saveImage
 import java.io.File
 
 private lateinit var photoFile: File
@@ -74,16 +75,20 @@ class MainActivity : AppCompatActivity() {
                 val image = imread(photoFile.absolutePath)
                 val docCornersExtractor = DocCornerPointsExtractor()
                 docCornersExtractor.image = image
-                docCornersExtractor.computeCornerPoints()
-                val docExtractor =
-                    DocExtractor(docCornersExtractor.image, docCornersExtractor.points)
-                val imgWarp = docExtractor.warp()
-                saveImage(photoFile.absolutePath, imgWarp)
+                try {
+                    docCornersExtractor.computeCornerPoints()
+                    val docExtractor =
+                        DocExtractor(docCornersExtractor.image, docCornersExtractor.points)
+                    val imgWarp = docExtractor.warp()
+                    saveImage(photoFile.absolutePath, imgWarp)
+                } catch (e: StdRangeError) {
+                    // Invalid corner points detected, skipping
+                    // processing and showing the original image
+                }
 
                 val scan = BitmapFactory.decodeFile(photoFile.absolutePath)
                 val imageView = findViewById<ImageView>(R.id.imageView)
                 imageView.setImageBitmap(scan)
-
 
             }
         }
